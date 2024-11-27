@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId
+  username      String             @unique
+  displayName   String?
+  email         String             @unique
+  passwordHash  String
+  avatarUrl     String?
+  bio           String?
+  phoneNumber   String
+  role          String             @default("USER")
+  drugs         Drug[]             @relation("UserDrugs")
+  sessions      Session[]          @relation("UserSessions")
+  organisations UserOrganisation[] @relation("UserToUserOrganisation") // Updated relation name
+  createdAt     DateTime           @default(now())
+  Organisation  Organisation[]
+}
+
+model Session {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation("UserSessions", fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+}
+
+model Organisation {
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  type          String
+  name          String             @default("name")
+  email         String             @unique
+  telephone     String
+  longitude     String
+  latitude      String
+  address       String
+  openHours     String
+  closingHours  String
+  description   String?
+  drugs         Drug[]             @relation("OrganisationDrugs")
+  userId        String             @db.ObjectId
+  user          User               @relation(fields: [userId], references: [id])
+  organisations UserOrganisation[] @relation("OrganisationToUserOrganisation") // Updated relation name
+}
+
+model UserOrganisation {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String @db.ObjectId
+  organisationId String @db.ObjectId
+
+  user         User         @relation("UserToUserOrganisation", fields: [userId], references: [id])
+  organisation Organisation @relation("OrganisationToUserOrganisation", fields: [organisationId], references: [id])
+
+  @@unique([userId, organisationId]) // Unique constraint for the combination of userId and organisationId
+}
+
+model Drug {
+  id             String                @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String
+  quantity       Int
+  price          Int
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  organisationId String                @db.ObjectId
+  organisation   Organisation          @relation("OrganisationDrugs", fields: [organisationId], references: [id], onDelete: Cascade)
+  userId         String                @db.ObjectId
+  user           User                  @relation("UserDrugs", fields: [userId], references: [id], onDelete: Cascade)
+  reservations   DrugsOnReservations[]
+}
+
+model Reservation {
+  id        String                @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  Int
+  date      DateTime
+  validated Boolean               @default(false)
+  code      String
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  drugs     DrugsOnReservations[]
+}
+
+model DrugsOnReservations {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  reservationId String      @db.ObjectId
+  drugId        String      @db.ObjectId
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  drug          Drug        @relation(fields: [drugId], references: [id], onDelete: Cascade)
+  assignedAt    DateTime    @default(now())
+  assignedBy    String
+}
