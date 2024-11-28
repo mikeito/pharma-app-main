@@ -1,5 +1,4 @@
-import { IconChecklist, IconLayoutDashboard } from '@tabler/icons-react';
-import { UserCog, BadgeInfo, Users, ClipboardCheck, HandPlatter, LayoutDashboard } from 'lucide-react';
+import {  Users, LayoutDashboard, Pill, Boxes, Layers3 } from 'lucide-react';
 import { SiteRole } from 'src/types';
 
 export interface NavLink {
@@ -18,7 +17,7 @@ export const sidelinks: SideLink[] = [
   {
     title: 'Dashboard',
     label: '',
-    href: '/admin/',
+    href: '/admin',
     icon: <LayoutDashboard size={20} />,
     roles:["ADMIN"]
   },
@@ -27,13 +26,13 @@ export const sidelinks: SideLink[] = [
     title: 'Users',
     label: '',
     href: '/admin/users',
-    icon: <UserCog size={20} />,
-    roles:['ADMIN', ]
+    icon: <Users size={20} />,
+    roles:['ADMIN',]
   },
   {
     title: 'Organisations',
     label: '',
-    icon: <Users size={20} />,
+    icon: <Boxes size={20} />,
     href: '/admin/organisations',
     roles:['ADMIN']
   },
@@ -41,15 +40,14 @@ export const sidelinks: SideLink[] = [
     title: 'Drugs',
     label: '',
     href: '/admin/drugs',
-    icon: <Users size={20} />,
+    icon: <Pill size={20} />,
     roles:['ADMIN','PHARMACIST']
   },
   {
     title: 'Reservations',
     label: '',
     href: '/admin/reservations',
-    icon: <Users size={20} />,
-    roles:[]
-    // roles:['ADMIN','PHARMACIST','USER']
+    icon: <Layers3 size={20} />,
+    roles:['ADMIN','PHARMACIST','USER']
   },
 ];

@@ -14,8 +14,8 @@ const DashboardLayout = ({
 }>) => {
   return (
     <AuthProvider>
-      <PrivateRoute>
-        <AppShell>
+      <AppShell>
+        {/* <PrivateRoute> */}
           <Layout>
             {/* ===== Top Heading ===== */}
             <LayoutHeader>
@@ -28,8 +28,8 @@ const DashboardLayout = ({
             </LayoutHeader>
             <LayoutBody className='space-y-4'>{children}</LayoutBody>
           </Layout>
-        </AppShell>
-      </PrivateRoute>
+        {/* </PrivateRoute> */}
+      </AppShell>
     </AuthProvider>
   );
 };

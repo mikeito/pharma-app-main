@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from 'src/components/table';
 import { columns } from './columns';
 import { statuses, types } from '../../data/data';
-import { transactions } from '../../data/transactions';
-import { DeleteTasksDialog } from './delete-tasks-dialog';
 import useAppState from 'src/hooks/state';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { DateRangePicker } from 'src/components/ui/date-range-picker';
@@ -17,12 +15,14 @@ import { UserState } from 'src/redux/modules/users/userReducer';
 import { selectUsers } from 'src/redux/modules/users/userSelector';
 
 const Table = () => {
-  const users: typeof UserState.users = useAppSelector(selectUsers);
   const dispatch = useAppDispatch();
+  const users: typeof UserState.users = useAppSelector(selectUsers);
 
   useEffect(() => {
     dispatch(userAction.getUsers());
   }, []);
+  console.log({users})
+  console.log("heyy")
 
   const sortItems = [
     {
@@ -41,7 +41,7 @@ const Table = () => {
     <div className='flex flex-col space-y-2.5'>
       <DateRangePicker triggerSize='sm' triggerClassName='ml-auto w-56 sm:w-60' align='end' />
       <DataTable
-        data={users.data === undefined ? [] : users.data}
+        data={users?.data || []}
         columns={columns}
         loading={users.loading}
         sortList={sortItems}

@@ -23,6 +23,7 @@ const Table = () => {
   useEffect(() => {
     dispatch(drugActions.getDrugs());
   }, []);
+  
 
   const sortItems = [
     {

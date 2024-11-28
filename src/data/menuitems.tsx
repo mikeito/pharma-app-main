@@ -18,11 +18,10 @@ export const menuItems: SideLink[] = [
   {
     title: 'Dashboard',
     label: '',
-    href: '/admin/',
+    href: '/admin',
     icon: <LayoutDashboard size={20} />,
     roles:["ADMIN"]
   },
-
   {
     title: 'Users',
     label: '',
@@ -57,5 +56,12 @@ export const menuItems: SideLink[] = [
     href: '/search',
     icon: <Users size={20} />,
     roles:['PHARMACIST','ADMIN','USER']
+  },
+  {
+    title: 'Home',
+    label: '',
+    href: '/',
+    icon: <Users size={20} />,
+    roles:['ALL']
   },
 ];

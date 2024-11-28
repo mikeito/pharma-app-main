@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from 'src/components/table';
 import { columns } from './columns';
 import { statuses, types } from '../../data/data';
-import { transactions } from '../../data/transactions';
-import { DeleteTasksDialog } from './delete-tasks-dialog';
 import useAppState from 'src/hooks/state';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { DateRangePicker } from 'src/components/ui/date-range-picker';

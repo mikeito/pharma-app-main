@@ -5,15 +5,17 @@ import { Button } from '../custom/button';
 import Nav from './nav';
 import { cn } from 'src/lib/utils';
 import { sidelinks } from 'src/data/sidelinks';
-import { useAuth } from 'src/provider/AuthProvider';
 import { getAuthorizedMenuItems } from 'src/helpers/filterlinks';
+import { menuItems } from 'src/data/menuitems';
+import { getLocalUser } from 'src/helpers/auth';
+import { Store } from 'lucide-react';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Sidebar2({ className, isCollapsed, setIsCollapsed }: SidebarProps) {
+export default function Sidebar({ className, isCollapsed, setIsCollapsed }: SidebarProps) {
   const [navOpened, setNavOpened] = useState(false);
 
   /* Make body not scrollable when navBar is opened */
@@ -24,13 +26,11 @@ export default function Sidebar2({ className, isCollapsed, setIsCollapsed }: Sid
       document.body.classList.remove('overflow-hidden');
     }
   }, [navOpened]);
-  const { user } = useAuth(); // Get the logged-in user and their role from the auth context
-
-  const accessibleLinks = sidelinks.filter(link => link.roles.includes(user?.role));
+  const user = getLocalUser();
 
   const userMenuItems = getAuthorizedMenuItems(sidelinks, user?.role);
 
-
+  console.log({menuItems})
   return (
     <aside
       className={cn(
@@ -52,38 +52,9 @@ export default function Sidebar2({ className, isCollapsed, setIsCollapsed }: Sid
         {/* Header */}
         <LayoutHeader className='sticky top-0 justify-center px-4  py-10  md:px-4'>
           <div className={`flex justify-center  items-center ${!isCollapsed ? 'gap-2' : ''}`}>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 256 256'
-              className={`transition-all ${isCollapsed ? 'h-6 w-6' : 'h-8 w-8'}`}
-            >
-              <rect width='256' height='256' fill='none'></rect>
-              <line
-                x1='208'
-                y1='128'
-                x2='128'
-                y2='208'
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='16'
-              ></line>
-              <line
-                x1='192'
-                y1='40'
-                x2='40'
-                y2='192'
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='16'
-              ></line>
-              <span className='sr-only'>Website Name</span>
-            </svg>
+            <Store className='text-primary'/>
             <div className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}>
-              <span className='font-medium'>User</span>
+              <span className='font-bold text-primary text-2xl'>Pharma App</span>
             </div>
           </div>
 

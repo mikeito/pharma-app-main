@@ -32,7 +32,6 @@ const validationSchema = yup.object({
 export function LoginForm({ className, ...props }: LoginFormProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  // const { login } = useAuth();  
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const initialValues: FormProps = {
@@ -42,16 +41,22 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
 
   const handleSubmit = async (data: FormProps) => {
-    setIsSubmitting(true);
-    dispatch(authActions.loginUser(data) as any).then((response: any) => {
-      if (response.payload.success) {
-        setIsSubmitting(false);
-        console.log(response.payload)
-        router.push('/search')
+    try {
+      setIsSubmitting(true); // Start submission
+      const response: any = await dispatch(authActions.loginUser(data) as any);
+
+      if (response.payload?.success) {
+        router.push('/search');
+      } else {
+        console.error('Login failed:', response.payload);
       }
-    })
-    setIsSubmitting(false);
+    } catch (error) {
+      console.error('Error during login:', error);
+    } finally {
+      setIsSubmitting(false); // End submission
+    }
   };
+
 
   const formik = useFormik<FormProps>({
     initialValues,
@@ -63,14 +68,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
-      {/* {user.error && (
-            <Alert variant="destructive" className="bg-red-50">
-              <AlertTitle>Incorrect credentials</AlertTitle>
-              <AlertDescription>
-                Please enter your correct credentials to login
-              </AlertDescription>
-            </Alert>
-          )} */}
+
       <div className='grid gap-4'>
         <Input
           id='email'
@@ -80,7 +78,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
           onChange={handleChange}
           onBlur={handleBlur}
           error={touched.email && errors.email}
-          placeholder='mosa@iwomi.com'
+          placeholder='example@gmail.com'
         />
         <Input
           id='password'
@@ -91,21 +89,21 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
           onChange={handleChange}
           onBlur={handleBlur}
           error={touched.password && errors.password}
-          placeholder='****'
-          rightLabel={
-            <div className='flex items-center'>
-              <Link href='/forgot-password' className='ml-auto inline-block text-sm underline'>
-                Forgot your password?
-              </Link>
-            </div>
-          }
+          placeholder='********'
         />
+        <Button
+          disabled={isSubmitting}
+          type="button" // Prevents default submit, as Formik handles submission
+          className="w-full sm:w-auto mt-4 text-white py-2 px-4 rounded hover:bg-primary/30"
+          onClick={submitForm}
+        >
+          {isSubmitting ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            'Login'
+          )}
+        </Button>
 
-        
-        <Button disabled={isSubmitting} type='submit' className='w-full sm:w-auto mt-4 text-white py-2 px-4 rounded hover:bg-primary/30' onClick={submitForm}>
-        {isSubmitting ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : null} {/* Render loader conditionally */}
-        Login
-      </Button>
       </div>
     </div>
   );

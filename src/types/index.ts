@@ -74,3 +74,4 @@ export type SiteRole =
   | "ADMIN"
   | "USER"
   | "PHARMACIST"
+  | "ALL"

@@ -13,24 +13,18 @@ export default function Login() {
             <p className='text-balance text-muted-foreground'>Enter your email below to login to your account</p>
           </div>
           <LoginForm />
-          <div className='mt-4 text-center text-sm'>
+          {/* <div className='mt-4 text-center text-sm'>
             Don&apos;t have an account?{' '}
             <Link href='#' className='underline'>
               Sign up
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
-      <div className='hidden bg-muted md:block lg:col-span-2 '>
-        <div className='flex justify-center items-center  my-auto h-screen mx-5'>
-          <img src='/assets/logo-image.svg' alt='Image' className='object-cover dark:brightness-[0.2] dark:grayscale items-center z-10 ' />
-          <img
-            src='/assets/circle-up.svg'
-            alt='Image'
-            className='absolute top-0 lg:left-[33.4%] lg:w-96 lg:h-96 md:w-52 md:h-52 md:left-[50%]'
-          />
-          <img src='/assets/circle-down.svg' alt='Image' className='absolute bottom-0 right-0 z-0 lg:w-96 lg:h-96 md:w-52 md:h-52' />
-        </div>
+      <div className='hidden bg-muted md:block lg:col-span-2 bg-blue-300'>
+          <img src='/female.jpg' alt='Image' className='object-cover h-screen w-full dark:brightness-[0.2] dark:grayscale items-center z-10 ' />
+        {/* <div className='flex justify-center items-center  my-auto h-screen mx-5'>
+        </div> */}
       </div>
     </div>
   );

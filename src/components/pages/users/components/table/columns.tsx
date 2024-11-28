@@ -55,7 +55,7 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: 'role',
     header: ({ column }) => <DataTableColumnHeader column={column} title='role' />,
-    cell: ({ row }) => <Badge className='w-[80px] rounded-sm bg-primary/40'>{row.getValue('role')}</Badge>
+    cell: ({ row }) => <Badge className='p-2 rounded-sm bg-primary/40'>{row.getValue('role')}</Badge>
   },
 
   {

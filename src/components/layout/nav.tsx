@@ -11,10 +11,10 @@ import {
 } from '../ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import { cn } from 'src/lib/utils';
-import useCheckActiveNav from 'src/hooks/use-check-active-nav';
 import { SideLink } from 'src/data/sidelinks';
 import Link from 'next/link';
 import { Typography } from '../ui/typography';
+import useCheckActiveNav from 'src/hooks/use-check-active-nav';
 
 interface NavProps extends React.HTMLAttributes<HTMLDivElement> {
   isCollapsed: boolean;
@@ -57,71 +57,59 @@ interface NavLinkProps extends SideLink {
 
 function NavLink({ title, icon, label, href, closeNav, subLink = false }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav();
+  const isActive = checkActiveNav(href);
   return (
     <Link
       href={href}
       onClick={closeNav}
       className={cn(
         buttonVariants({
-          variant: checkActiveNav(href) && !subLink ? 'secondary' : 'ghost',
+          variant: isActive && !subLink ? 'secondary' : 'ghost', // Apply 'secondary' only if active
           size: 'sm',
         }),
         'h-12 justify-start text-wrap rounded-none px-6',
-        checkActiveNav(href) && !subLink ? 'bg-primary-foreground  border-l-4 border-l-primary' : '',
-
-        subLink && 'h-10 w-full px-2',
+        isActive && !subLink ? 'bg-primary-foreground border-l-4 border-l-primary' : '', // Active styles
+        subLink && 'h-10 w-full px-2' // Sub-link styling
       )}
-      aria-current={checkActiveNav(href) ? 'page' : undefined}
+      aria-current={isActive ? 'page' : undefined}
     >
-      <div className={`mr-2 ${checkActiveNav(href) ? 'text-primary ' : ''}`}>
-        {icon}
-        {subLink && (
-          <div
-            className={` w-1.5 h-1.5 rounded-full bg-slate-500 ${
-              checkActiveNav(href) ? 'bg-primary-foreground  border-l-4 border-l-primary' : ''
-            }`}
-          ></div>
-        )}
-      </div>
-      <Typography size='xs' className={`${checkActiveNav(href) ? 'text-primary font-semibold' : ''}`}>
+      <div className={`mr-2 ${isActive ? 'text-primary ' : ''}`}>{icon}</div>
+      <Typography size="xs" className={`${isActive ? 'text-primary font-semibold' : ''}`}>
         {title}
       </Typography>
-      {label && <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>{label}</div>}
+      {label && <div className="ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground">{label}</div>}
     </Link>
   );
 }
 
+
 function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav();
 
-  /* Open collapsible by default
-   * if one of child element is active */
-  const isChildActive = !!sub?.find((s) => checkActiveNav(s.href));
+  const isChildActive = !!sub?.find((s) => checkActiveNav(s.href)); // Check active state for sub-links
 
   return (
     <Collapsible defaultOpen={isChildActive}>
       <CollapsibleTrigger
         className={cn(
           buttonVariants({ variant: 'ghost', size: 'sm' }),
-
-          isChildActive ? 'bg-primary-foreground  border-l-4 border-l-primary' : '',
-
-          'group h-12 w-full justify-start rounded-none px-6',
+          isChildActive ? 'bg-primary-foreground border-l-4 border-l-primary' : '',
+          'group h-12 w-full justify-start rounded-none px-6'
         )}
       >
-        <div className={`mr-2 ${isChildActive ? 'text-primary ' : ''}`}>{icon}</div>
-        <Typography size='xs' className={`${isChildActive ? 'text-primary font-semibold' : ''}`}>
+        <div className={`mr-2 ${isChildActive ? 'text-primary' : ''}`}>{icon}</div>
+        <Typography size="xs" className={`${isChildActive ? 'text-primary font-semibold' : ''}`}>
           {title}
         </Typography>
-        {label && <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>{label}</div>}
+        {label && <div className="ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground">{label}</div>}
         <span className={cn('ml-auto transition-all group-data-[state="open"]:-rotate-180')}>
-          <IconChevronDown stroke={1} className={`${isChildActive ? 'text-primary ' : ''}`} />
+          <IconChevronDown stroke={1} className={`${isChildActive ? 'text-primary' : ''}`} />
         </span>
       </CollapsibleTrigger>
-      <CollapsibleContent className='collapsibleDropdown' asChild>
+      <CollapsibleContent className="collapsibleDropdown" asChild>
         <ul>
           {sub!.map((sublink) => (
-            <li key={sublink.title} className='my-1 ml-8'>
+            <li key={sublink.title} className="my-1 ml-8">
               <NavLink {...sublink} subLink closeNav={closeNav} />
             </li>
           ))}
@@ -131,8 +119,11 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
   );
 }
 
+
 function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav();
+  const isActive = checkActiveNav(href);
+
   return (
     <Tooltip delayDuration={0}>
       <TooltipTrigger asChild>
@@ -140,35 +131,33 @@ function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
           href={href}
           className={cn(
             buttonVariants({
-              variant: checkActiveNav(href) ? 'secondary' : 'ghost',
+              variant: isActive ? 'secondary' : 'ghost',
               size: 'icon',
             }),
-            'h-12 w-12 ',
-
-            checkActiveNav(href) ? 'bg-primary-foreground  border-l-4 border-l-primary' : '',
+            'h-12 w-12',
+            isActive ? 'bg-primary-foreground border-l-4 border-l-primary' : ''
           )}
         >
           {icon}
-          <Typography size='xs' className={`sr-only ${checkActiveNav(href) ? 'text-primary font-semibold' : ''}`}>
+          <Typography size="xs" className={`sr-only ${isActive ? 'text-primary font-semibold' : ''}`}>
             {title}
           </Typography>
         </Link>
       </TooltipTrigger>
-      <TooltipContent side='right' className='flex items-center gap-4'>
-        <Typography size='xs' className={` ${checkActiveNav(href) ? 'text-primary font-semibold' : ''}`}>
+      <TooltipContent side="right" className="flex items-center gap-4">
+        <Typography size="xs" className={`${isActive ? 'text-primary font-semibold' : ''}`}>
           {title}
         </Typography>
-        {label && <span className='ml-auto text-muted-foreground'>{label}</span>}
+        {label && <span className="ml-auto text-muted-foreground">{label}</span>}
       </TooltipContent>
     </Tooltip>
   );
 }
 
+
 function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav();
-
-  /* Open collapsible by default
-   * if one of child element is active */
+ 
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.href));
 
   return (

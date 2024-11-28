@@ -42,7 +42,7 @@ export const columns: ColumnDef<Transaction>[] = [
       const res= original;
       return (
         <div className="capitalize">            
-          {res.organisation.name}
+          {res?.organisation?.name}
         </div>
       );
     },
@@ -56,7 +56,7 @@ export const columns: ColumnDef<Transaction>[] = [
       const res= original;
       return (
         <div className="capitalize">            
-          {res.organisation.type}
+          {res?.organisation?.type}
         </div>
       );
     },

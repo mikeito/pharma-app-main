@@ -5,50 +5,12 @@ import connectMongo from 'src/lib/mongodb';
 import { verifyPassword } from 'src/lib/hash';
 import { generateToken } from 'src/lib/jwt';
 
-// export async function POST(req: NextRequest) {
-//   await connectMongo();
-//   const { email, password } = await req.json();
-//   if (!email || !password) {
-//     return NextResponse.json({
-//        error: 'Email and password are required'         
-//      }, { status: 400 });
-//   }
-
-//   try {
-//     const existingUser = await prisma.user.findFirst({
-//         where: {
-//           email: {
-//             equals: email,
-//             mode: "insensitive",
-//           },
-//         },
-//       });
-//     if (!existingUser || !existingUser.passwordHash) {
-//       return NextResponse.json({
-//           error: 'Incorrect email or password'         
-//         }, { status: 404 });
-//     }    
-//     const isPasswordValid = await bcrypt.compare(password, existingUser.passwordHash);
-//     if (!isPasswordValid) {
-//       return NextResponse.json({
-//           error: 'Incorrect email or password'         
-//         }, { status: 404 });
-//     }
-  
-//     return NextResponse.json({
-//         data:existingUser,
-//         message: 'Login successful',
-//      }, { status: 201 });
-//   } catch (error: any) {
-//     return NextResponse.json({ message: error.message }, { status: 500 });
-//   }
-// }
 
 export async function POST(req: NextRequest) {
+    await connectMongo();
   try {
     const { email, password } = await req.json();
 
-    // Find user by email
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 401 });
