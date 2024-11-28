@@ -5,7 +5,7 @@ export const TransactionState = {
   transactions: {
     loading: false,
     data: [],
-    error: null,
+    error: null as string | null,
   },
 };
 
@@ -21,7 +21,7 @@ const transactionReducer = createReducer(TransactionState, (builder) => {
     })
     .addCase(transactionActions.getTransactions.rejected, (state, action) => {
       state.transactions.loading = false;
-      state.transactions.error = action.error;
+      state.transactions.error = action.error as string;
     });
 });
 

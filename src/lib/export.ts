@@ -27,7 +27,7 @@ export function exportTableToCSV<TData>(
   const headers = table
     .getAllLeafColumns()
     .map((column) => column.id)
-    .filter((id) => !excludeColumns.includes(id));
+    .filter((id:any) => !excludeColumns.includes(id));
   // getSelectedRows={(selectedRows) => {
   //     dispatch({ selectedRows });
   //   }}

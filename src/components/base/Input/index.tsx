@@ -4,7 +4,6 @@ import FormMessage from './form_message';
 import FormDescription from './form_description';
 import FormLabel from './form_label';
 import { PasswordInput } from '../../ui/password';
-import { PhoneInput } from '../../ui/phone-input';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -17,7 +16,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 interface Components {
   password: JSX.Element;
-  phoneNumber: JSX.Element;
+  // phoneNumber: JSX.Element;
   default: JSX.Element;
 }
 
@@ -30,9 +29,9 @@ export function Input({ description, name, label, error, type = 'text', rightLab
         {...props}
       />
     ),
-    phoneNumber: (
-      <PhoneInput defaultCountry='CM' className={` ${error && 'text-destructive border-destructive focus-visible:ring-destructive'}`} />
-    ),
+    // phoneNumber: (
+    //   <PhoneInput defaultCountry='CM' className={` ${error && 'text-destructive border-destructive focus-visible:ring-destructive'}`} />
+    // ),
     default: (
       <ShadInput
         name={name}

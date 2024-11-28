@@ -1,12 +1,7 @@
-// import { PillBottle } from 'lucide-react'
-import { IconLocationPin } from '@tabler/icons-react';
-import {  AlarmClock, Clock10Icon, LocateIcon, Map, MapPin, PillIcon } from 'lucide-react';
+import {  AlarmClock,MapPin, PillIcon } from 'lucide-react';
 import React from 'react'
-// import hospital from '/hospital.png'
-// import hospital from '../../../../public/hospital.png'
 const SearchCard = ({organisation}:any) => {
 
-  console.log({organisation})
   const {type, name, description, openHours,closingHours,address, telephone, user} = organisation;
 
   const getImageUrl = (type: string) => {

@@ -8,7 +8,7 @@ import serviceReducer from './modules/services/serviceReducer';
 import transactionReducer from './modules/transactions/transactionReducer';
 import accountReducer from './modules/accounts/accountReducer';
 import userReducer from './modules/users/userReducer';
-import clientReducer from './modules/clients/clientReducer';
+// import clientReducer from './modules/clients/clientReducer';
 import organisationReducer from './modules/organisations/organisationReducer';
 import drugReducer from './modules/drugs/drugReducer';
 import reservationReducer from './modules/reservations/reservationReducer';
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   transaction: transactionReducer,
   account: accountReducer,
   user: userReducer,
-  client: clientReducer,
+  // client: clientReducer,
   organisation: organisationReducer,
   drug:drugReducer,
   reservation:reservationReducer,

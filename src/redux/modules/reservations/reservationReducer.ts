@@ -5,10 +5,10 @@ export const ReservationState = {
     reservations: {
       loading: false,
       data: [],
-      error: null || {},
+      error: null as string | null,
     },
     reservation:{},
-    error: null || {},
+    error: null as string | null,
     creating:false
 };
 
@@ -23,7 +23,7 @@ const reservationReducer = createReducer(ReservationState, (builder) => {
       })
       .addCase(reservationActions.getReservations.rejected, (state, action) => {
         state.reservations.loading = false;
-        state.reservations.error = action.error;
+        state.reservations.error = action.error as string;
       })
       .addCase(reservationActions.createReservation.pending, (state) => {
         state.creating = true;
@@ -34,7 +34,7 @@ const reservationReducer = createReducer(ReservationState, (builder) => {
       })
       .addCase(reservationActions.createReservation.rejected, (state, action) => {
         state.creating = false;
-        state.error = action.error;
+        state.error = action.error as string;
       });
   });
   

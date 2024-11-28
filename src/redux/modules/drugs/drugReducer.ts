@@ -5,10 +5,10 @@ export const DrugState = {
     drugs: {
       loading: false,
       data: [],
-      error: null || {},
+      error: null as string | null,
     },
     drug:{},
-    error: null || {},
+    error: null as string | null,
     creating:false
 };
 
@@ -23,7 +23,7 @@ const drugReducer = createReducer(DrugState, (builder) => {
       })
       .addCase(drugActions.getDrugs.rejected, (state, action) => {
         state.drugs.loading = false;
-        state.drugs.error = action.error;
+        state.drugs.error = action.error as string;
       })
       .addCase(drugActions.createDrug.pending, (state) => {
         state.creating = true;
@@ -34,7 +34,7 @@ const drugReducer = createReducer(DrugState, (builder) => {
       })
       .addCase(drugActions.createDrug.rejected, (state, action) => {
         state.creating = false;
-        state.error = action.error;
+        state.error = action.error as string;
       });
   });
   

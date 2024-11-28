@@ -1,19 +1,20 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createAction, createReducer } from '@reduxjs/toolkit';
 import authActions from './authActions';
-import appActions from '../clients/clientActions';
 import { getLocalUser } from 'src/helpers/auth';
+
+const initialize = createAction('app/initialize');
 
 export const UserState = {
   user: {
     loading: false,
     data: {},
-    error: null,
+    error: null as string | null,
   },
 };
 
 const authReducer = createReducer(UserState, (builder) => {
   builder
-    .addCase(appActions.initialize, (state) => {
+    .addCase(initialize, (state) => {
       const user = getLocalUser();
       state.user.data = user;
     })
@@ -25,7 +26,7 @@ const authReducer = createReducer(UserState, (builder) => {
     })
     .addCase(authActions.loginUser.rejected, (state, action) => {
       state.user.loading = false;
-      state.user.error = action.error;
+      state.user.error = action.error as string;
     })
     .addCase(authActions.signInUser.pending, (state) => {
       state.user.loading = true;

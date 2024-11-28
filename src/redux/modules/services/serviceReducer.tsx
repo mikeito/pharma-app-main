@@ -5,7 +5,7 @@ export const ServiceState = {
   service: {
     loading: false,
     data: {},
-    error: null,
+    error: null as string | null,
   },
 };
 
@@ -20,7 +20,7 @@ const serviceReducer = createReducer(ServiceState, (builder) => {
     })
     .addCase(serviceActions.initService.rejected, (state, action) => {
       state.service.loading = false;
-      state.service.error = action.error;
+      state.service.error = action.error as string;
     });
 });
 
