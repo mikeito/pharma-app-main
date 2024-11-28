@@ -6,7 +6,7 @@
     "dev": "next dev",
     "format": "prettier . --write",
     "remove-logs": "node remove-console-logs.js",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install"
