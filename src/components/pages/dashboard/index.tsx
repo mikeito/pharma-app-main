@@ -30,9 +30,9 @@ export default function Dashboard() {
 
   const { hospitals, pharmacies, healthcenters } = useMemo(() => {
     return {
-      hospitals: organisations.data.filter(org => org.type === 'HOSPITAL'),
-      pharmacies: organisations.data.filter(org => org.type === 'PHARMACY'),
-      healthcenters: organisations.data.filter(org => org.type === 'HEALTHCENTER'),
+      hospitals: organisations.data.filter((org:any) => org.type === 'HOSPITAL'),
+      pharmacies: organisations.data.filter((org:any) => org.type === 'PHARMACY'),
+      healthcenters: organisations.data.filter((org:any) => org.type === 'HEALTHCENTER'),
     };
   }, [organisations]);
   return (
