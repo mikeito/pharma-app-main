@@ -20,6 +20,8 @@ const SearchPage = () => {
   const router = useRouter()
   const [organisationResults, setOrganisationResults] = useState<IOrganisation[]>([]);
   const [drugResults, setDrugResults] = useState<IDrug[]>([]); 
+  const [mapCoordinates, setMapCoordinates] = useState<{ latitude: number; longitude: number }[]>([]);
+
 
 
   const organisations: typeof OrganisationState.organisations = useAppSelector(selectOrganisations);
@@ -31,23 +33,45 @@ const SearchPage = () => {
   useEffect(() => {
     if (organisations?.data) {
       setOrganisationResults(organisations.data);
+      updateMapCoordinates(organisations.data);
+
     }
   }, [organisations]);
 
 
-  const handleSearch = (results: { data: IOrganisation[] | IDrug[], item: string }) => {
-    if (results.item === "organisation") {
-      setOrganisationResults(results.data as IOrganisation[]);
-      setDrugResults([]); // Clear drug results
-    } else if (results.item === "drug") {
-      console.log(results.data)
-      setDrugResults(results.data as IDrug[]);
-      setOrganisationResults([]); // Clear organisation results
-    }
+  // const coordinates = organisations.data?.length > 0 ? organisations.data : markers?.map((result:any) => ({
+  //   latitude: Number(result.latitude),
+  //   longitude: Number(result.longitude),
+  // }));
+
+  const updateMapCoordinates = (items: IOrganisation[]) => {
+    const coordinates = items.map((item) => ({
+      latitude: parseFloat(item.latitude),
+      longitude: parseFloat(item.longitude),
+    }));
+    setMapCoordinates(coordinates);
   };
 
-  console.log({organisationResults})
-  console.log({drugResults})
+
+  const handleSearch = (results: { data: IOrganisation[] | IDrug[]; item: string }) => {
+    if (results.item === "organisation") {
+      setOrganisationResults(results.data as IOrganisation[]);
+      setDrugResults([]);
+      updateMapCoordinates(results.data as IOrganisation[]); // Pass organisation data
+    } else if (results.item === "drug") {
+      const drugs = results.data as IDrug[];
+      setDrugResults(drugs);
+      setOrganisationResults([]);
+  
+      // Extract coordinates from the drugs' organisation property
+      const drugCoordinates = drugs
+        .map((drug) => drug.organisation)
+        .filter((org): org is IOrganisation => !!org); // Type guard to ensure `organisation` exists
+      updateMapCoordinates(drugCoordinates);
+    }
+  };
+  
+
 
 
   return (
@@ -67,7 +91,7 @@ const SearchPage = () => {
 
       <div className="flex h-full overflow-y-hidden">
         <div className="flex-grow bg-slate-900">
-          <MapBox />
+        <MapBox coordinates={mapCoordinates} />
         </div>
         <div className="max-w-[500px]  overflow-y-auto flex-col gap-y-4 bg-blue-400 px-2">
         {organisationResults.length > 0 ? (
