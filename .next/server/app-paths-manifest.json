@@ -1,6 +1,0 @@
-{
-  "/api/drugs/search/route": "app/api/drugs/search/route.js",
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/(main)/search/page": "app/(main)/search/page.js",
-  "/(main)/page": "app/(main)/page.js"
-}
